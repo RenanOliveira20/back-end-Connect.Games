@@ -21,9 +21,7 @@ const userSchema = new Schema(
             unique: true
         },
         biography: String,
-        posts: [
-
-        ],
+        posts: [],
         following: [
             {
                 type: Schema.Types.ObjectId,

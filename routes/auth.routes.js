@@ -1,5 +1,5 @@
 const {Router} = require('express');
-const User = require('../models/User-Schema')
+const User = require('../models/User.model')
 const bcrypt = require('bcryptjs')
 
 const router = Router()
@@ -18,7 +18,6 @@ router.post('/signup', async (req,res)=>{
         const salt = bcrypt.genSaltSync(10);
         const passwordHash = bcrypt.hashSync(password,salt)
 
-        console.log(passwordHash)
         await User.create({
             name,
             username,
