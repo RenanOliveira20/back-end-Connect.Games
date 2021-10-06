@@ -1,3 +1,4 @@
+
 const { model, Schema } = require('mongoose');
 
 const userSchema = new Schema(
@@ -46,5 +47,4 @@ const userSchema = new Schema(
         tymestamps: true
     }
 );
-
 module.exports = model('User', userSchema)
