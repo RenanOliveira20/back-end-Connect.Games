@@ -21,3 +21,5 @@ app.use(authMiddleware);
 app.listen(process.env.PORT, ()=>{
     console.log(`server runing in port ${process.env.PORT}`)
 })
+
+process.on("SIGINT", ()=> {process.exit()})
