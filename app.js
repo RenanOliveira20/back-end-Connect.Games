@@ -15,7 +15,6 @@ app.use(cors());
 const authRoutes = require('./routes/auth.routes');
 
 app.use('/auth',authRoutes);
-
 app.use(authMiddleware);
 
 app.listen(process.env.PORT, ()=>{

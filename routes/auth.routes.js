@@ -48,7 +48,6 @@ router.post('/login', async (req, res) => {
         if (!validation) {
             throw new Error('Wrong username or password');
         }
-        console.log(user)
         const payload = {
             id: `${user._id}`,
             username: `${user.username}`,
