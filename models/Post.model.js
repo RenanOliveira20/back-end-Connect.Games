@@ -29,7 +29,7 @@ const Postschema = new Schema(
     },
 
 {
-    tymestamps: true
+    timestamps: true
 }
 );
 
