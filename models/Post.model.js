@@ -1,26 +1,26 @@
-const { model, Schema } = require ("mongoose");
+const { model, Schema } = require ('mongoose');
 
 const Postschema = new Schema(
     {
         text: String,
         imageUrl: String,
-        userID: {
+        user: {
             type: Schema.Types.ObjectId,
             ref: "User"  
         },
-        comment: [
+        comments: [
             {
                 type: Schema.Types.ObjectId,
                 ref: "Comment"
             }
         ],
-        like: [
+        likes: [
             {
                 type: Schema.Types.ObjectId,
                 ref: "User"
             }
         ],
-        deslike: [
+        deslikes: [
             {
                 type: Schema.Types.ObjectId,
                 ref: "User"
