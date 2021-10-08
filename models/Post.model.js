@@ -1,5 +1,6 @@
 const { model, Schema } = require("mongoose")
 
+
 const Postschema = new Schema(
     {
         text: String,
@@ -10,18 +11,22 @@ const Postschema = new Schema(
         },
         comment: [
             {
+
                 type: Schema.Types.ObjectId, 
+
                 ref: "Comment"
             }
         ],
         like: [
             {
                 type: Schema.Types.ObjectId, 
+
             }
         ],
         deslike: [
             {
                 type: Schema.Types.ObjectId, 
+
                 ref: "User"
             }
         ]
