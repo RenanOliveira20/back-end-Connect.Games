@@ -22,15 +22,14 @@ router.put('/:id/comment', async (req, res)=>{
     const {id} = req.params;
     const commentBody = {...req.body}
     try {
-        const reqUser = await User.findOne({_id: id})
         const newComment = await Comment.create({
             text: commentBody.text,
-            reqUser
+            user: req.user.id
         })
-        const reqComment = await Post.findOneAndUpdate({_id: id},{$push : {comments : newComment}},{new : true}).populate('comments');
+        const reqComment = await Post.findOneAndUpdate({_id: id},{$push : {comments : newComment._id}},{new : true}).populate('comments');
         res.status(200).json({message: 'new comment to post'})
     } catch (error) {
-        res.status(500).json({message: 'error creating a comment for the post',error : error})
+        res.status(500).json({message: 'error creating a comment for the post',error : error.message})
     }
     
 })
