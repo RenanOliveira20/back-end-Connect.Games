@@ -14,8 +14,9 @@ app.use(cors());
 
 //...import routes
 const authRoutes = require('./routes/auth.routes');
-const feedRoutes = require('./routes/feed.routes')
-const postRoutes = require('./routes/post.routes')
+const feedRoutes = require('./routes/feed.routes');
+const postRoutes = require('./routes/post.routes');
+const profileRoutes = require('./routes/profile.routes');
 
 //authentication
 app.use('/auth',authRoutes);
@@ -25,7 +26,10 @@ app.use(authMiddleware);
 app.use('/feed', feedRoutes);
 
 //posts interations
-app.use('/post', postRoutes)
+app.use('/post', postRoutes);
+
+//profile interations
+app.use('/profile', profileRoutes)
 
 app.listen(process.env.PORT, ()=>{
     console.log(`server runing in port ${process.env.PORT}`)
