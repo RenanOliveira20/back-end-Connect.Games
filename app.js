@@ -19,6 +19,7 @@ const postRoutes = require('./routes/post.routes')
 
 //authentication
 app.use('/auth',authRoutes);
+
 app.use(authMiddleware);
 
 //feed interations
