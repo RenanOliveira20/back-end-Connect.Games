@@ -3,7 +3,7 @@ const User = require('../models/User.model');
 
 const router = Router();
 
-
+//pegar informações do user
 router.get('/', async (req, res) => {
     const { id } = req.user;
     try {
@@ -74,4 +74,14 @@ router.put('/', async (req, res,next) => {
     };
 });
 
+//delete account !! 
+router.delete('/', async (req, res)=>{
+    const {id} = req.user;
+    try {
+        const deleteUser = await User.findOneAndDelete({_id: id})
+        res.status(200).json({message:`User deleted`})
+    } catch (error) {
+        
+    }
+})
 module.exports = router
