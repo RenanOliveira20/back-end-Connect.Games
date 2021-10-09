@@ -12,9 +12,10 @@ app.use(express.json());
 app.use(cors());
 
 //...import routes
-const authRoutes = require("./routes/auth.routes");
-const feedRoutes = require("./routes/feed.routes");
-const postRoutes = require("./routes/post.routes");
+const authRoutes = require('./routes/auth.routes');
+const feedRoutes = require('./routes/feed.routes');
+const postRoutes = require('./routes/post.routes');
+const profileRoutes = require('./routes/profile.routes');
 
 //authentication
 app.use("/auth", authRoutes);
