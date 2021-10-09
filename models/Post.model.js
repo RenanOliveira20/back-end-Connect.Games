@@ -17,9 +17,10 @@ const Postschema = new Schema(
     likes: [
       {
         type: Schema.Types.ObjectId,
+        ref: "User"
       },
     ],
-    deslikes: [
+    dislikes: [
       {
         type: Schema.Types.ObjectId,
         ref: "User",
