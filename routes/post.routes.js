@@ -31,41 +31,44 @@ router.put("/:id/comment", async (req, res) => {
     ).populate("comments");
     res.status(200).json({ message: "new comment to post" });
   } catch (error) {
-    res
-      .status(500)
-      .json({
-        message: "error creating a comment for the post",
-        error: error.message,
-      });
+    res.status(500).json({
+      message: "error creating a comment for the post",
+      error: error.message,
+    });
   }
 });
 
 router.put("/:id/reactions", async (req, res) => {
   const { id } = req.params;
   const { like, dislike } = req.body;
-  const reqUser = { ...req.user };
 
+  const userID = req.user.id;
   try {
-    if (!like && !dislike) {
-      throw new Error("unresponsive");
-    }
     if (like) {
-      const newLike = await Post.findByIdAndUpdate(
-        { _id: id },
-        { $push: { likes: reqUser._id } },
-        { new: true }
-      );
-      res.status(200).json(newLike);
-      console.log(newLike);
+      const postFromDb = await Post.findById(id);
+      if (postFromDb.likes.includes(userID)) {
+        postFromDb.likes.splice(postFromDb.likes.indexOf(userID), 1);
+        postFromDb.save();
+        res.status(200).json(postFromDb);
+      } else {
+        postFromDb.likes.push(userID);
+        postFromDb.save();
+        res.status(200).json(postFromDb);
+        console.log(postFromDb);
+      }
     }
     if (dislike) {
-      const newLike = await Post.findByIdAndUpdate(
-        { _id: id },
-        { $push: { dislikes: reqUser._id } },
-        { new: true }
-      );
-      res.status(200).json(newLike);
-      console.log(newLike);
+      const postFromDb = await Post.findById(id);
+      if (postFromDb.dislikes.includes(userID)) {
+        postFromDb.dislikes.splice(postFromDb.dislikes.indexOf(userID), 1);
+        postFromDb.save();
+        res.status(200).json(postFromDb);
+      } else {
+        postFromDb.dislikes.push(userID);
+        postFromDb.save();
+        res.status(200).json(postFromDb);
+        console.log(postFromDb);
+      }
     }
   } catch (error) {
     console.log(error);
