@@ -13,7 +13,7 @@ const commentSchema = new Schema(
         ref: "User",
       },
     ],
-    disLikes: [
+    dislikes: [
       {
         type: Schema.Types.ObjectId,
         ref: "User",
