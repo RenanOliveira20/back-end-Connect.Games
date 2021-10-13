@@ -3,9 +3,32 @@ const User = require("../models/User.model");
 const Post = require("../models/Post.model");
 const router = Router();
 
+//get all posts in chronological order
+router.get('/', async (req, res)=>{
+    const {id} = req.user
+    try {
+        const feed =[]
+        const user = await User.findOne({_id: id}).populate('following');
+        user.posts.forEach((e)=>{
+          feed.push(e)
+        })
+        user.following.forEach((e)=>{
+          e.posts.forEach((e)=>{
+            feed.push(e)
+          })
+        })
+        feed.sort( (a ,b) => { 
+        return a.createdAt - b.createdAt
+      })
+        res.status(200).json(feed)
+    } catch (error) {
+        console.log(error)
+    }
+})
+
 router.put("/", async (req, res) => {
   const { text, imageUrl } = req.body;
-  console.log(req.body);
+
   try {
     if (!text && !imageUrl) {
       throw new Error("don't have image or text to post");

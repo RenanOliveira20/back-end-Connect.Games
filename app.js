@@ -28,6 +28,8 @@ app.use("/feed", feedRoutes);
 //posts interations
 app.use("/post", postRoutes);
 
+app.use("/profile", profileRoutes)
+
 app.listen(process.env.PORT, () => {
   console.log(`server runing in port ${process.env.PORT}`);
 });
