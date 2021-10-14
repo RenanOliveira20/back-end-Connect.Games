@@ -48,7 +48,7 @@ router.put("/", async (req, res, next) => {
     }
     if (follow) {
       interactUser = await User.findOne({
-        followers: { $in: [`${idLogUser}`] },
+        $and: [{ _id: id }, { followers: { $in: [`${idLogUser}`] } }]
       });
       if (interactUser) {
         console.log(interactUser.followers);
