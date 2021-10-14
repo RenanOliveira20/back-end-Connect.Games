@@ -83,29 +83,29 @@ router.put("/:id/reactionsComment", async (req, res) => {
   const userID = req.user.id;
   try {
     if (like) {
-      const postFromDb = await Comment.findById(id);
-      if (postFromDb.likes.includes(userID)) {
-        postFromDb.likes.splice(postFromDb.likes.indexOf(userID), 1);
-        postFromDb.save();
-        res.status(200).json(postFromDb);
+      const commentFromDb = await Comment.findById(id);
+      if (commentFromDb.likes.includes(userID)) {
+        commentFromDb.likes.splice(commentFromDb.likes.indexOf(userID), 1);
+        commentFromDb.save();
+        res.status(200).json(commentFromDb);
       } else {
-        postFromDb.likes.push(userID);
-        postFromDb.save();
-        res.status(200).json(postFromDb);
-        console.log(postFromDb);
+        commentFromDb.likes.push(userID);
+        commentFromDb.save();
+        res.status(200).json(commentFromDb);
+        console.log(commentFromDb);
       }
     }
     if (dislike) {
-      const postFromDb = await Comment.findById(id);
-      if (postFromDb.dislikes.includes(userID)) {
-        postFromDb.dislikes.splice(postFromDb.dislikes.indexOf(userID), 1);
-        postFromDb.save();
-        res.status(200).json(postFromDb);
+      const commentFromDb = await Comment.findById(id);
+      if (commentFromDb.dislikes.includes(userID)) {
+        commentFromDb.dislikes.splice(commentFromDb.dislikes.indexOf(userID), 1);
+        commentFromDb.save();
+        res.status(200).json(commentFromDb);
       } else {
-        postFromDb.dislikes.push(userID);
-        postFromDb.save();
-        res.status(200).json(postFromDb);
-        console.log(postFromDb);
+        commentFromDb.dislikes.push(userID);
+        commentFromDb.save();
+        res.status(200).json(commentFromDb);
+        console.log(commentFromDb);
       }
     }
   } catch (error) {
