@@ -5,29 +5,32 @@ const Comment = require("../models/Comment.model.js");
 const router = Router();
 
 //get all posts in chronological order
-router.get("/", async (req, res) => {
-  const { id } = req.user;
-  try {
-    const feed = [];
-    const user = await User.findOne({ _id: id }).populate("following");
-    user.posts.forEach((e) => {
-      feed.push(e);
-    });
-    user.following.forEach((e) => {
-      e.posts.forEach((e) => {
-        feed.push(e);
-      });
-    });
-    feed.sort((a, b) => {
-      return a.createdAt - b.createdAt;
-    });
-    res.status(200).json(feed);
-  } catch (error) {
-    console.log(error);
-  }
-});
+router.get('/', async (req, res)=>{
+    const {id} = req.user
+    try {
+        const feed =[]
+        const user = await User.findOne({_id: id}).populate('following');
+        user.posts.forEach((e)=>{
+          feed.push(e)
+        })
+        user.following.forEach((e)=>{
+          e.posts.forEach((e)=>{
+            feed.push(e)
+          })
+        })
+        feed.sort( (a ,b) => { 
+        return a.createdAt - b.createdAt
+      })
+        res.status(200).json(feed)
+    } catch (error) {
+        res.status(500).json({
+          message: 'Error to get all posts to feed',
+          error: error.message
+        })
+    }
+})
 
-router.put("/", async (req, res) => {
+router.post("/", async (req, res) => {
   const { text, imageUrl } = req.body;
 
   try {
