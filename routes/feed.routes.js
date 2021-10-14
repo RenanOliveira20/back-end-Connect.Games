@@ -22,11 +22,14 @@ router.get('/', async (req, res)=>{
       })
         res.status(200).json(feed)
     } catch (error) {
-        console.log(error)
+        res.status(500).json({
+          message: 'Error to get all posts to feed',
+          error: error.message
+        })
     }
 })
 
-router.put("/", async (req, res) => {
+router.post("/", async (req, res) => {
   const { text, imageUrl } = req.body;
 
   try {
