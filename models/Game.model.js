@@ -65,7 +65,19 @@ const Gameschema = new Schema(
                     recommended: String
                 }
             }
-        ]
+        ],
+        likes: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: "User"
+            },
+        ],
+        dislikes: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: "User",
+            },
+        ],    
     },
     {
         tymestamps: true
