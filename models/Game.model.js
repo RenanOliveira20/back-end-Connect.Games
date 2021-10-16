@@ -14,17 +14,13 @@ const Gameschema = new Schema(
             }
         ],
         released: String,
-        tba: true,
+        tba: Boolean,
         updated: String,
         background_image: String,
         background_image_additional: String,
         website: String,
         rating: Number,
         rating_top: Number,
-        ratings: { 
-            type: Schema.Types.ObjectId,
-            ref: "User"
-        },
         reactions: {},
         added: Number,
         added_by_status: {},
@@ -69,11 +65,24 @@ const Gameschema = new Schema(
                     recommended: String
                 }
             }
-        ]
+        ],
+        likes: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: "User"
+            },
+        ],
+        dislikes: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: "User",
+            },
+        ],    
     },
     {
         tymestamps: true
     }
+
 );
 
 module.exports = model("Game", Gameschema)
