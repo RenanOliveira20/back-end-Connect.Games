@@ -47,7 +47,7 @@ router.post("/login", async (req, res) => {
     if (!user) {
       throw new Error("Wrong username or password");
     }
-    const validation = bcrypt.compare(password, user.password);
+    const validation = bcrypt.compareSync(password, user.password);
     if (!validation) {
       throw new Error("Wrong username or password");
     }
@@ -60,7 +60,7 @@ router.post("/login", async (req, res) => {
       expiresIn: "1day",
     });
 
-    res.status(200).json({ user: payload, token });
+    res.status(200).json({ user: payload, token});
   } catch (error) {
     res
       .status(500)
