@@ -128,7 +128,6 @@ router.delete('/:id/:commentId', async( req , res ) =>{
       if(!post){ 
       throw new Error('Post not find')
       }
-      console.log(post.user,comment.user)
       if(await Post.findOne({$and :[{_id: id},{user: logUser}]}) || await Comment.findOne({$and :[{_id: id},{user: logUser}]})){
       const index = post.comments.findIndex(e => e._id === commentId);
       post.comments.splice(index,1)
