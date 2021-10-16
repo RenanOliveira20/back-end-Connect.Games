@@ -16,7 +16,7 @@ const authRoutes = require('./routes/auth.routes');
 const feedRoutes = require('./routes/feed.routes');
 const postRoutes = require('./routes/post.routes');
 const profileRoutes = require('./routes/profile.routes');
-const gameRoutes = require('./routes/games.route')
+const gameRoutes = require('./routes/games.routes')
 
 //authentication
 app.use("/auth", authRoutes);

@@ -3,7 +3,7 @@ require("./config/db");
 
 const axios = require('axios');
 const gameModel = require('./models/Game.model');
-const gameRoute = require('./routes/games.route')
+const gameRoute = require('./routes/games.routes')
 
 const migrate = async () => {
     const api = axios.create({
