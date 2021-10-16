@@ -2,8 +2,11 @@ require("dotenv").config();
 require("./config/db");
 const express = require("express");
 const cors = require("cors");
+const morgan = require("morgan")
 
 const app = express();
+
+app.use(morgan('dev'))
 
 const authMiddleware = require("./middlewares/auth.middleware");
 
@@ -26,6 +29,9 @@ app.use(authMiddleware);
 app.use("/games", gameRoutes);
 
 
+// games
+app.use("/games", gameRoutes);
+
 //feed interations
 app.use("/feed", feedRoutes);
 
@@ -33,7 +39,6 @@ app.use("/feed", feedRoutes);
 app.use("/post", postRoutes);
 
 app.use("/profile", profileRoutes)
-
 
 
 app.listen(process.env.PORT, () => {
