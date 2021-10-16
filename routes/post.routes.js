@@ -14,7 +14,7 @@ router.get("/:id", async (req, res) => {
       throw new Error(`don't find a post`);
     }
     res.status(200).json(post);
-  } catch (error) {}
+  } catch (error) { }
 });
 
 router.post("/:id/comment", async (req, res) => {
@@ -116,25 +116,25 @@ router.put("/:id/reactionsComment", async (req, res) => {
 });
 
 //delete comment
-router.delete('/:id/:commentId', async( req , res ) =>{
-  const {id,commentId} = req.params;
+router.delete('/:id/:commentId', async (req, res) => {
+  const { id, commentId } = req.params;
   const logUser = req.user.id;
   try {
-    const post = await Post.findOne({_id: id}).populate('comments');
-    const comment = await Comment.findOne({_id: commentId})
-    if(!comment){
-      throw new Error (`Comment not find`)
+    const post = await Post.findOne({ _id: id }).populate('comments');
+    const comment = await Comment.findOne({ _id: commentId })
+    if (!comment) {
+      throw new Error(`Comment not find`)
     }
-      if(!post){ 
+    if (!post) {
       throw new Error('Post not find')
-      }
-      console.log(post.user,comment.user)
-      if(await Post.findOne({$and :[{_id: id},{user: logUser}]}) || await Comment.findOne({$and :[{_id: id},{user: logUser}]})){
+    }
+    if (await Post.findOne({ $and: [{ _id: id }, { user: logUser }] }) || await Comment.findOne({ $and: [{ _id: id }, { user: logUser }] })) {
       const index = post.comments.findIndex(e => e._id === commentId);
-      post.comments.splice(index,1)
-      await Comment.findOneAndDelete({_id: commentId})
-      res.status(200).json(`deleted a comment ${commentId}`)}
-      throw new Error ('unauthorized')
+      post.comments.splice(index, 1)
+      await Comment.findOneAndDelete({ _id: commentId })
+      res.status(200).json(`deleted a comment ${commentId}`)
+    }
+    throw new Error('unauthorized')
   } catch (error) {
     res.status(500).json({
       message: "Error o delete the comment",
