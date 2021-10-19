@@ -1,4 +1,6 @@
 const { Router } = require("express");
+const cloudinary = require("cloudinary").v2;
+const uploadImage = require("../middlewares/feedpost.middleware");
 const User = require("../models/User.model");
 const Post = require("../models/Post.model");
 const Comment = require("../models/Comment.model.js");
@@ -30,8 +32,13 @@ router.get('/', async (req, res)=>{
     }
 })
 
-router.post("/", async (req, res) => {
-  const { text, imageUrl } = req.body;
+router.post("/", uploadImage.single("image"), async (req, res) => {
+  let path = ''
+  if (req.file){
+    path = req.file.path
+  }
+  const { text } = req.body;
+  const imageUrl = path
 
   try {
     if (!text && !imageUrl) {
@@ -58,8 +65,13 @@ router.delete("/:idpost", async (req, res) => {
   const { idpost } = req.params;
 
   try {
-    const deleteComments = await Post.findById(idpost);
-    deleteComments.comments.forEach(async (element) => {
+    const post = await Post.findById(idpost);
+    const { imageUrl } = post;
+    const imgArray = imageUrl.split('/');
+    const img = imgArray[imgArray.length -1];
+    const imgName = img.split('.')[0]
+    await cloudinary.uploader.destroy(`ConnectGames/imagePost/${imgName}`);
+    post.comments.forEach(async (element) => {
       await Comment.findOneAndDelete(element._id);
     });
     await Post.findOneAndDelete({ _id: idpost, user: id });

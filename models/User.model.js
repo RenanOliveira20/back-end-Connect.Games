@@ -40,8 +40,9 @@ const userSchema = new Schema(
                 type: Schema.Types.ObjectId,
                 ref: 'Game'
             }
-        ]
-
+        ],
+        profilePicture: String,
+        
     },
     {
         tymestamps: true

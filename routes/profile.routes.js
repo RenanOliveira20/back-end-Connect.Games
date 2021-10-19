@@ -1,6 +1,8 @@
 const { Router } = require("express");
 const User = require("../models/User.model");
-const Game = require('../models/Game.model');
+const Game = require("../models/Game.model");
+const uploadImage = require("../middlewares/profilepicture.middleware");
+const cloudinary = require("cloudinary").v2;
 const router = Router();
 
 //pegar informações do user
@@ -49,7 +51,7 @@ router.put("/", async (req, res, next) => {
     }
     if (follow) {
       interactUser = await User.findOne({
-        $and: [{ _id: id }, { followers: { $in: [`${idLogUser}`] } }]
+        $and: [{ _id: id }, { followers: { $in: [`${idLogUser}`] } }],
       });
       if (interactUser) {
         console.log(interactUser.followers);
@@ -71,35 +73,32 @@ router.put("/", async (req, res, next) => {
   }
 });
 
-router.put('/:id/favorite', async (req, res) => {
+router.put("/:id/favorite", async (req, res) => {
   const { id } = req.params;
   const userId = req.user.id;
   const { favorite } = req.body;
 
-  try { 
+  try {
     const user = await User.findOne({ _id: userId });
 
-    if(favorite){
-
+    if (favorite) {
       user.favoriteGames.push(userId);
-      user.save()
-    }
-
-    if(!favorite){
-  
-      const index = user.favoriteGames.findIndex((element) => element._id === id);
-
-      user.favoriteGames.splice(index,1);
       user.save();
-
     }
 
-    res.status(200).json({msg:'Favorite Game sucessful'})
-    
-  } catch (error) {
-    res.status(500).json({msg:'Error while favorite game'})
-  };
+    if (!favorite) {
+      const index = user.favoriteGames.findIndex(
+        (element) => element._id === id
+      );
 
+      user.favoriteGames.splice(index, 1);
+      user.save();
+    }
+
+    res.status(200).json({ msg: "Favorite Game sucessful" });
+  } catch (error) {
+    res.status(500).json({ msg: "Error while favorite game" });
+  }
 });
 
 //delete account !!
@@ -109,6 +108,47 @@ router.delete("/", async (req, res) => {
     const deleteUser = await User.findOneAndDelete({ _id: id });
     res.status(200).json({ message: `User deleted` });
   } catch (error) {}
+});
+
+//cloudinary image user
+router.put("/uploadimage", uploadImage.single("image"), async (req, res) => {
+  if (!req.file) {
+    res.status(400).json({ Error: "Image was not sent" });
+    return;
+  }
+  const { path } = req.file;
+  const { id } = req.user;
+
+  try {
+    const updatedUser = await User.findByIdAndUpdate(
+      id,
+      { profilePicture: path },
+      { new: true }
+    );
+    res.status(200).json(updatedUser);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
+router.delete("/deleteimage", async (req, res) => {
+  const { id } = req.user;
+  try {
+    const user = await User.findById(id);
+    const { profilePicture } = user;
+    const imgArray = profilePicture.split("/");
+    const img = imgArray[imgArray.length - 1];
+    const imgName = img.split(".")[0];
+    await cloudinary.uploader.destroy(`ConnectGames/imageUser/${imgName}`);
+    const updatedUser = await User.findByIdAndUpdate(
+      id,
+      { profilePicture: "" },
+      { new: true }
+    );
+    res.status(200).json(updatedUser);
+  } catch (error) {
+    res.status(500).json(error);
+  }
 });
 
 module.exports = router;
