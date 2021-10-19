@@ -1,6 +1,4 @@
 const cloudinary = require("cloudinary").v2;
-// const { CloudinaryStorage } = require("multer-storage-cloudinary");
-// const multer = require("multer");
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_NAME,
@@ -10,14 +8,4 @@ cloudinary.config({
 
 
 module.exports = cloudinary
-// const storage = new CloudinaryStorage({
-//   cloudinary,
-//   params: {
-//     folder: 'ConnectGames/imagiUser',
-//     resource_type: 'image',
-//   },
-// });
 
-// const uploadImage = multer({ storage });
-
-// module.exports = uploadImage
