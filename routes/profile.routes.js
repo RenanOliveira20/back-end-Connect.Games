@@ -1,6 +1,5 @@
 const { Router } = require("express");
 const User = require("../models/User.model");
-const Game = require("../models/Game.model");
 const uploadImage = require("../middlewares/profilepicture.middleware");
 const cloudinary = require("cloudinary").v2;
 const router = Router();
@@ -131,7 +130,7 @@ router.put("/uploadimage", uploadImage.single("image"), async (req, res) => {
   }
 });
 
-router.delete("/deleteimage", async (req, res) => {
+router.put("/deleteimage", async (req, res) => {
   const { id } = req.user;
   try {
     const user = await User.findById(id);
