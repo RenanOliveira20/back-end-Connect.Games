@@ -10,7 +10,6 @@ router.get("/", async (req, res) => {
   const { id } = req.user;
   try {
     const logUser = await User.findOne({ _id: id });
-    console.log(logUser);
     if (!logUser) {
       throw new Error("User not find");
     }
