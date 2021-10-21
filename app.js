@@ -23,14 +23,11 @@ const gameRoutes = require('./routes/games.routes')
 
 //authentication
 app.use("/auth", authRoutes);
+// games
+app.use("/games", gameRoutes);
 
 app.use(authMiddleware);
-// games
-app.use("/games", gameRoutes);
 
-
-// games
-app.use("/games", gameRoutes);
 
 //feed interations
 app.use("/feed", feedRoutes);
@@ -45,14 +42,14 @@ app.listen(process.env.PORT, () => {
   console.log(`server runing in port ${process.env.PORT}`);
 });
 
-process.once("SIGUSR2", function () {
-  gracefulShutdown(function () {
-    process.kill(process.pid, "SIGUSR2");
-    process.exit(0);
-  });
-});
+// process.once("SIGUSR2", function () {
+//   gracefulShutdown(function () {
+//     process.kill(process.pid, "SIGUSR2");
+//     process.exit(0);
+//   });
+// });
  
-process.on("SIGINT", function () {
-  process.kill(process.pid, "SIGINT");
-  process.exit(0);
-});
+// process.on("SIGINT", function () {
+//   process.kill(process.pid, "SIGINT");
+//   process.exit(0);
+// });

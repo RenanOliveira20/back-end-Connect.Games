@@ -7,7 +7,7 @@ const gameRoute = require('./routes/games.routes')
 
 const migrate = async () => {
     const api = axios.create({
-        baseURL: 'https://api.rawg.io/api/games?key=cbb5b86f21b641e194e2cf3dde368951&page=3'
+        baseURL: 'https://api.rawg.io/api/games?key=cbb5b86f21b641e194e2cf3dde368951'
     })
     
     try {
