@@ -21,6 +21,8 @@ const userSchema = new Schema(
             type: String,
             unique: true
         },
+        profilePicture: String,
+        profileCover:String,
         biography: String,
         posts: [],
         following: [
