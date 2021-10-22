@@ -43,7 +43,6 @@ const userSchema = new Schema(
                 ref: 'Game'
             }
         ],
-        profilePicture: String,
         
     },
     {
