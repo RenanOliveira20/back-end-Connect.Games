@@ -39,49 +39,11 @@ router.post("/:id/comment", async (req, res) => {
   }
 });
 
-router.put("/:id/reactionsPost", async (req, res) => {
-  const { id } = req.params;
-  const { like, dislike } = req.body;
-
-  const userID = req.user.id;
-  try {
-    if (like) {
-      const postFromDb = await Post.findById(id);
-      if (postFromDb.likes.includes(userID)) {
-        postFromDb.likes.splice(postFromDb.likes.indexOf(userID), 1);
-        postFromDb.save();
-        res.status(200).json(postFromDb);
-      } else {
-        postFromDb.likes.push(userID);
-        postFromDb.save();
-        res.status(200).json(postFromDb);
-        console.log(postFromDb);
-      }
-    }
-    if (dislike) {
-      const postFromDb = await Post.findById(id);
-      if (postFromDb.dislikes.includes(userID)) {
-        postFromDb.dislikes.splice(postFromDb.dislikes.indexOf(userID), 1);
-        postFromDb.save();
-        res.status(200).json(postFromDb);
-      } else {
-        postFromDb.dislikes.push(userID);
-        postFromDb.save();
-        res.status(200).json(postFromDb);
-        console.log(postFromDb);
-      }
-    }
-  } catch (error) {
-    console.log(error);
-    res.status(500).json(error);
-  }
-});
-
 router.put("/:id/reactionsComment", async (req, res) => {
   const { id } = req.params;
   const { like, dislike } = req.body;
 
-  const userID = req.user.id;
+  const userID = req.user.id; 
   try {
     if (like) {
       const commentFromDb = await Comment.findById(id);
