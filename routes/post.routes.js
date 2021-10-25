@@ -139,6 +139,7 @@ router.delete("/:id/:commentId", async (req, res) => {
       if (index !== -1) {
         post.comments.splice(index, 1);
         await Comment.findOneAndDelete({ _id: commentId });
+        post.save()
        return res.status(200).json(`deleted a comment ${commentId}`);
       } 
       res.status(400).json({message: 'comment not found'})
