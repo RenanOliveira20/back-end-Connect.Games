@@ -6,13 +6,14 @@ const morgan = require("morgan")
 
 const app = express();
 
+app.use(express.json());
+app.use(cors());
+
 app.use(morgan('dev'))
 
 const authMiddleware = require("./middlewares/auth.middleware");
 
 // most importants middlewares
-app.use(express.json());
-app.use(cors());
 
 //...import routes
 const authRoutes = require('./routes/auth.routes');
