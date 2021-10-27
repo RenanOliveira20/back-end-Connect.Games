@@ -49,12 +49,12 @@ router.put("/:id/reactionsComment", async (req, res) => {
     if (!like) {
       if (commentFromDb.likes.includes(userID)) {
         commentFromDb.likes.splice(commentFromDb.likes.indexOf(userID), 1);
-        Comment.findByIdAndUpdate(id, postFromDb)
+       await Comment.findByIdAndUpdate(id, commentFromDb);
         res.status(200).json(commentFromDb);
       }
     } else {
       commentFromDb.likes.push(userID);
-      Comment.findByIdAndUpdate(id, postFromDb)
+      await Comment.findByIdAndUpdate(id, commentFromDb);
       res.status(200).json(commentFromDb);
     }
     if (!dislike) {
@@ -63,12 +63,12 @@ router.put("/:id/reactionsComment", async (req, res) => {
           commentFromDb.dislikes.indexOf(userID),
           1
         );
-        Comment.findByIdAndUpdate(id, postFromDb)
+      await  Comment.findByIdAndUpdate(id, commentFromDb);
         res.status(200).json(commentFromDb);
       }
     } else {
       commentFromDb.dislikes.push(userID);
-      Comment.findByIdAndUpdate(id, postFromDb)
+      await Comment.findByIdAndUpdate(id, commentFromDb);
       res.status(200).json(commentFromDb);
     }
   } catch (error) {

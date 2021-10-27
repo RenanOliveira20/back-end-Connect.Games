@@ -65,30 +65,31 @@ router.post("/", uploadImage.single("image"), async (req, res) => {
 router.put("/:id/reactionsPost", async (req, res) => {
   const { id } = req.params;
   const { like, dislike } = req.body;
-
+  
   const userID = req.user.id;
   try {
     const postFromDb = await Post.findById(id);
+
     if (!like) {
       if (postFromDb.likes.includes(userID)) {
         postFromDb.likes.splice(postFromDb.likes.indexOf(userID), 1);
-        Post.findByIdAndUpdate(id, postFromDb);
+        await Post.findByIdAndUpdate(id, postFromDb);
         res.status(200).json(postFromDb);
       }
     } else {
       postFromDb.likes.push(userID);
-      Post.findByIdAndUpdate(id, postFromDb);
-      res.status(200).json(postFromDb);
+       const newLike = await Post.findByIdAndUpdate(id, postFromDb, {new:true});
+      res.status(200).json(newLike);
     }
     if (!dislike) {
       if (postFromDb.dislikes.includes(userID)) {
         postFromDb.dislikes.splice(postFromDb.dislikes.indexOf(userID), 1);
-        Post.findByIdAndUpdate(id, postFromDb);
+       await Post.findByIdAndUpdate(id, postFromDb);
         res.status(200).json(postFromDb);
       }
     } else {
       postFromDb.dislikes.push(userID);
-      Post.findByIdAndUpdate(id, postFromDb);
+      await Post.findByIdAndUpdate(id, postFromDb);
       res.status(200).json(postFromDb);
     }
   } catch (error) {
