@@ -13,7 +13,7 @@ router.get("/", async (req, res) => {
     const feed = [];
     const user = await User.findOne({ _id: id })
       .populate("following")
-      .populate({ path: "posts", populate: { path: "comments" } });
+      .populate({ path: "posts", populate: [{ path: "comments" }, {path: "user", select: ["username", "profilePicture"]}] });
     user.posts.forEach((e) => {
       feed.push(e);
     });
