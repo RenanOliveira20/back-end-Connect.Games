@@ -38,8 +38,6 @@ const migrate = async () => {
         console.log('--------------FINISH---------------')
     }
 
-
-
 }
 
 
