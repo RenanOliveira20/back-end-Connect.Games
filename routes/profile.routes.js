@@ -9,7 +9,6 @@ router.get("/", async (req, res) => {
   const { id } = req.user;
   try {
     const logUser = await User.findOne({ _id: id });
-    console.log(logUser);
     if (!logUser) {
       throw new Error("User not find");
     }
@@ -110,7 +109,7 @@ router.delete("/", async (req, res) => {
 });
 
 //cloudinary image user
-router.put("/uploadimage", uploadImage.single("image"), async (req, res) => {
+router.put("/upload-profile-image", uploadImage.single("image"), async (req, res) => {
   if (!req.file) {
     res.status(400).json({ Error: "Image was not sent" });
     return;
@@ -129,13 +128,51 @@ router.put("/uploadimage", uploadImage.single("image"), async (req, res) => {
     res.status(500).json(error);
   }
 });
+router.put("/profile-cover-image", uploadImage.single("image"), async (req, res) => {
+  if (!req.file) {
+    res.status(400).json({ Error: "Image was not sent" });
+    return;
+  }
+  const { path } = req.file;
+  const { id } = req.user;
 
-router.put("/deleteimage", async (req, res) => {
+  try {
+    const updatedUser = await User.findByIdAndUpdate(
+      id,
+      { profileCover: path },
+      { new: true }
+    );
+    res.status(200).json(updatedUser);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
+router.put("/delete-profile-image", async (req, res) => {
   const { id } = req.user;
   try {
     const user = await User.findById(id);
     const { profilePicture } = user;
     const imgArray = profilePicture.split("/");
+    const img = imgArray[imgArray.length - 1];
+    const imgName = img.split(".")[0];
+    await cloudinary.uploader.destroy(`ConnectGames/imageUser/${imgName}`);
+    const updatedUser = await User.findByIdAndUpdate(
+      id,
+      { profilePicture: "" },
+      { new: true }
+    );
+    res.status(200).json(updatedUser);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+router.put("/delete-cover-image", async (req, res) => {
+  const { id } = req.user;
+  try {
+    const user = await User.findById(id);
+    const { profileCover } = user;
+    const imgArray = profileCover.split("/");
     const img = imgArray[imgArray.length - 1];
     const imgName = img.split(".")[0];
     await cloudinary.uploader.destroy(`ConnectGames/imageUser/${imgName}`);

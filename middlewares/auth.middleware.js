@@ -12,6 +12,7 @@ const auth = (req, res, next)=>{
         req.user = {...decodedToken}
         next();
     } catch (error) {
+        console.log(error)
         res.status(401).json({message: 'unauthorized'})
     }
 }
