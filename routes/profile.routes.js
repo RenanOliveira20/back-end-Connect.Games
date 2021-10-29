@@ -21,7 +21,8 @@ router.get("/", async (req, res) => {
 router.get('/user/:id', async (req,res) =>{
   const {id} = req.params
   try {
-    const user = await User.find({_id:id}).populate('posts', 'following', 'followers', 'favoriteGames');
+    const user = await User.find({_id:id}).populate('name');
+  
     if(!user){ 
     throw new Error('user not find');
 }

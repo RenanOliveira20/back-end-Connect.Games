@@ -35,7 +35,7 @@ app.use("/feed", feedRoutes);
 //posts interations
 app.use("/post", postRoutes);
 
-app.use("/profile", profileRoutes)
+app.use("/profile", profileRoutes);
 
 
 app.listen(process.env.PORT, () => {
