@@ -52,12 +52,18 @@ router.post('/comment/:id', async (req, res) => {
     const { id } = req.params;
     const commentBody = { ...req.body };
     
-    console.log( req)
     try {
         const newComment = await Comment.create({
             text: commentBody.text,
             user: req.user.id,
         });
+
+        const reqComment = await Game.findOneAndUpdate(
+            { _id: id },
+            { $push: { comments: newComment._id } },
+            { new: true }
+        ).populate("comments");
+
         res.status(200).json({ message: "new comment to post" });
     } catch (error) {
         res.status(500).json({
