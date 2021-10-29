@@ -2,6 +2,7 @@ const { model, Schema } = require("mongoose");
 
 const Gameschema = new Schema(
     {
+        id: Number,
         slug: String,
         name: String,
         name_original: String,

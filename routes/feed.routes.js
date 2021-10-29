@@ -11,7 +11,9 @@ router.get("/", async (req, res) => {
   const { id } = req.user;
   try {
     const feed = [];
-    const user = await User.findOne({ _id: id }).populate("following posts");
+    const user = await User.findOne({ _id: id })
+      .populate("following")
+      .populate({ path: "posts", populate: [{ path: "comments" }, {path: "user", select: ["username", "profilePicture"]}] });
     user.posts.forEach((e) => {
       feed.push(e);
     });
@@ -63,34 +65,32 @@ router.post("/", uploadImage.single("image"), async (req, res) => {
 router.put("/:id/reactionsPost", async (req, res) => {
   const { id } = req.params;
   const { like, dislike } = req.body;
-
+  
   const userID = req.user.id;
   try {
-    if (like) {
-      const postFromDb = await Post.findById(id);
+    const postFromDb = await Post.findById(id);
+
+    if (!like) {
       if (postFromDb.likes.includes(userID)) {
         postFromDb.likes.splice(postFromDb.likes.indexOf(userID), 1);
-        postFromDb.save();
+        await Post.findByIdAndUpdate(id, postFromDb);
         res.status(200).json(postFromDb);
-      } else {
-        postFromDb.likes.push(userID);
-        postFromDb.save();
-        res.status(200).json(postFromDb);
-        console.log(postFromDb);
       }
+    } else {
+      postFromDb.likes.push(userID);
+       const newLike = await Post.findByIdAndUpdate(id, postFromDb, {new:true});
+      res.status(200).json(newLike);
     }
-    if (dislike) {
-      const postFromDb = await Post.findById(id);
+    if (!dislike) {
       if (postFromDb.dislikes.includes(userID)) {
         postFromDb.dislikes.splice(postFromDb.dislikes.indexOf(userID), 1);
-        postFromDb.save();
+       await Post.findByIdAndUpdate(id, postFromDb);
         res.status(200).json(postFromDb);
-      } else {
-        postFromDb.dislikes.push(userID);
-        postFromDb.save();
-        res.status(200).json(postFromDb);
-        console.log(postFromDb);
       }
+    } else {
+      postFromDb.dislikes.push(userID);
+      await Post.findByIdAndUpdate(id, postFromDb);
+      res.status(200).json(postFromDb);
     }
   } catch (error) {
     console.log(error);
@@ -118,10 +118,10 @@ router.delete("/:idpost", async (req, res) => {
     if (index !== -1) {
       user.posts.splice(index, 1);
       user.save();
-      
-      return res.status(200).json({ message: `Post successfully deleted` });  
-    } 
-    res.status(400).json({ message: `post not found`})
+
+      return res.status(200).json({ message: `Post successfully deleted` });
+    }
+    res.status(400).json({ message: `post not found` });
   } catch (error) {
     res.status(500).json(error.message);
   }
