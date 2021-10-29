@@ -20,10 +20,10 @@ router.get("/", async (req, res) => {
         feed.push(e);
       });
     });
-    feed.sort((a, b) => {
-      return a.createdAt - b.createdAt;
+    const newFeed = feed.sort((a, b) => {
+      return b.createdAt -a.createdAt;
     });
-    res.status(200).json(feed);
+    res.status(200).json(newFeed);
   } catch (error) {
     res.status(500).json({
       message: "Error to get all posts to feed",
