@@ -17,6 +17,19 @@ router.get("/", async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+// get otheer
+router.get('/user/:id', async (req,res) =>{
+  const {id} = req.params
+  try {
+    const user = await User.find({_id:id}).populate('posts', 'following', 'followers', 'favoriteGames');
+    if(!user){ 
+    throw new Error('user not find');
+}
+res.status(200).json(user)
+  } catch (error) {
+    
+  }
+} )
 
 //follow and unfollow user
 router.put("/", async (req, res, next) => {
