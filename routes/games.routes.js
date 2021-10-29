@@ -19,7 +19,7 @@ router.get('/:id', async (req, res) => {
     const { id } = req.params;
 
     try {
-        const logGame = await Game.findOne({ _id: id }).populate("comments", ['user', 'text']);
+        const logGame = await Game.findOne({ _id: id }).populate("comments", ['user', 'text'])
 
         if (!logGame) {
             throw new Error("Game not found");
@@ -73,19 +73,45 @@ router.post('/comment/:id', async (req, res) => {
     };
 });
 
-router.put('/:id', async (req, res) => {
-    const { id } = req.params;
-    const payload = req.body;
+router.put('/favorites/:id', async (req, res) => {
+    const {id} = req.params;
+    const {favorite, unfavorite} = req.body
+
+    const userID = req.user.id;
 
     try {
-        const updateGame = await Game.findOneAndUpdate({ _id: id }, payload, { new: true });
-
-        res.status(200).json(updateGame);
-
+        const gameFromDb = await Game.findById(id);
+        if (!favorite) {
+            if (gameFromDb.userfavorites.includes(userID)){
+                gameFromDb.userfavorites.splice(gameFromDb.userfavorites.indexOf(userID), 1);
+                await Game.findByIdAndUpdate(id, gameFromDb);
+                res.status(200).json(gameFromDb)
+            }
+        } else {
+            gameFromDb.userfavorites.push(userID);
+            await Game.findByIdAndUpdate(id, gameFromDb);
+            res.status(200).json(gameFromDb)
+        }
     } catch (error) {
-        res.status(500).json({ message: 'Error while updating game', error });
-    };
-});
+        console.log(error);
+        res.status(500).json(error);
+    }
+}) 
+
+
+// router.put('/:id', async (req, res) => {
+//     const { id } = req.params;
+//     const payload = req.body;
+
+//     try {
+//         const updateGame = await Game.findOneAndUpdate({ _id: id }, payload, { new: true });
+
+//         res.status(200).json(updateGame);
+
+//     } catch (error) {
+//         res.status(500).json({ message: 'Error while updating game', error });
+//     };
+// });
 
 
 router.delete('/:id', async (req, res) => {
