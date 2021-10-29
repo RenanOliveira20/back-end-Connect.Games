@@ -90,10 +90,11 @@ router.put("/:id/favorite", async (req, res) => {
   const { favorite } = req.body;
 
   try {
+    console.log(id)
     const user = await User.findOne({ _id: userId });
 
     if (favorite) {
-      user.favoriteGames.push(userId);
+      user.favoriteGames.push(id);
       user.save();
     }
 
