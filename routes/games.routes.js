@@ -46,7 +46,7 @@ router.post('/', async (req, res) => {
     };
 });
 
-router.post('/:id/comment', async (req, res) => {
+router.post('/comment/:id', async (req, res) => {
     console.log(req.params)
     const { id } = req.params;
     const commentBody = { ...req.body };
