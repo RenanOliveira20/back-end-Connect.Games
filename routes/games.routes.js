@@ -19,7 +19,9 @@ router.get('/:id', async (req, res) => {
     const { id } = req.params;
 
     try {
-        const logGame = await Game.findOne({ _id: id }).populate("comments", ['user', 'text'])
+        const logGame = await Game.findOne({ _id: id }).populate({
+            path:'comments', 
+            populate: [{path: 'user'}]});
 
         if (!logGame) {
             throw new Error("Game not found");
@@ -75,7 +77,7 @@ router.post('/comment/:id', async (req, res) => {
 
 router.put('/favorites/:id', async (req, res) => {
     const {id} = req.params;
-    const {favorite, unfavorite} = req.body
+    const {favorite} = req.body
 
     const userID = req.user.id;
 
@@ -135,8 +137,9 @@ router.delete('/:id/:commentId', async (req, res) => {
     const { id, commentId } = req.params;
     const logUser = req.user.id;
 
-   try {
+    try {
         if (await Game.findOne({ $and: [{ _id: id }, { user: logUser }] }) || await Comment.findOne({ $and: [{ _id: id }, { user: logUser }] })) {
+            console.log(id)
            
            await Comment.findOneAndDelete({ _id: commentId});
            const game = await Game.findOne({ _id: id });

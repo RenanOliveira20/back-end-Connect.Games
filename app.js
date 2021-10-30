@@ -25,9 +25,9 @@ const gameRoutes = require('./routes/games.routes')
 app.use("/auth", authRoutes);
 
 app.use(authMiddleware);
-
 // games
 app.use("/games", gameRoutes);
+
 
 //feed interations
 app.use("/feed", feedRoutes);
