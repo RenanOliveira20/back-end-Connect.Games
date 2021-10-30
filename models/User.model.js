@@ -20,7 +20,11 @@ const userSchema = new Schema(
       type: String,
       unique: true,
     },
-    profilePicture: String,
+    profilePicture: {
+      type: String,
+      default:
+        "https://res.cloudinary.com/connect-games/image/upload/v1635557659/ConnectGames/imageUser/ImageProfile_fnk3rw.png",
+    },
     profileCover: String,
     biography: String,
     posts: [
