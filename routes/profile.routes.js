@@ -27,6 +27,20 @@ router.get("/", async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+// get othe user
+router.get('/user/:id', async (req,res) =>{
+  const {id} = req.params
+  try {
+    const user = await User.find({_id:id}).populate('name');
+  
+    if(!user){ 
+    throw new Error('user not find');
+}
+res.status(200).json({...user})
+  } catch (error) {
+    
+  }
+} )
 
 //follow and unfollow user
 router.put("/", async (req, res, next) => {
@@ -87,10 +101,11 @@ router.put("/:id/favorite", async (req, res) => {
   const { favorite } = req.body;
 
   try {
+    console.log(id)
     const user = await User.findOne({ _id: userId });
 
     if (favorite) {
-      user.favoriteGames.push(userId);
+      user.favoriteGames.push(id);
       user.save();
     }
 

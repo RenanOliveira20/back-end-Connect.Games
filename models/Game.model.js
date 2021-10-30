@@ -67,16 +67,10 @@ const Gameschema = new Schema(
                 }
             }
         ],
-        likes: [
+        userfavorites: [
             {
                 type: Schema.Types.ObjectId,
                 ref: "User"
-            },
-        ],
-        dislikes: [
-            {
-                type: Schema.Types.ObjectId,
-                ref: "User",
             },
         ],
         comments: [
