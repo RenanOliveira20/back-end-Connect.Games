@@ -91,6 +91,6 @@ http://localhost:<PORT>
 | DELETE | feed/:id             | {}                             | {delete}                | delete post                                  |
 | DELETE | post/:id/:commentId  | []                             | {delete}                | delete comments                              |
 | GET    | /feed                | {}                             | [{}]                    | takes posts from users that it follows.      |
-|--------|----------------------|--------------------------------|-------------------------|----------------------------------------------|
+
 
 ```
